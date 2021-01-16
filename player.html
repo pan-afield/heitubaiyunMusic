@@ -28,7 +28,16 @@
 
   <script src="./lib/jquery-1.12.4.min.js"></script>
 <script>
-    
+    let id = location.search.split('=')[1]
+    console.log(id);
+    $.get({
+      url: ' https://autumnfish.cn/song/url',
+      data : {id : id},
+      success: function(res){
+        console.log(res);
+        $('.audio').attr('src',res.data[0].url)
+      }
+    })
 </script>
 </body>
 

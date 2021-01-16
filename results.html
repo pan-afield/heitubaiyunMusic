@@ -13,7 +13,7 @@
 
 <body>
   <div class="result-wrapper">
-    <div class="song">
+    <!-- <div class="song">
       <div class="name">
         <span class="iconfont icon-play"></span>
         美丽的神话
@@ -42,7 +42,7 @@
       <div class="singer">韩红|孙楠</div>
       <div class="album">《美丽的神话》</div>
       <div class="time">04:30</div>
-    </div>
+    </div> -->
   </div>
 
   <script src="./lib/jquery-1.12.4.min.js"></script>
@@ -64,7 +64,51 @@
   </script> -->
 
   <script>
-    
+    let keywords = location.search.split('=')[1]
+    keywords = decodeURI(keywords)
+    $.get({
+      url:  'https://autumnfish.cn/search',
+      data:{keywords : keywords},
+      success: function(res){
+        console.log(res);
+        let songs = res.result.songs
+        for(let i = 0;i< songs.length;i++){
+          let singer = ''
+          for(let j = 0;j<songs[i].artists.length;j++){
+            singer += songs[i].artists[j].name + '|'
+          }
+          singer = singer.substr(0,singer.length -1)
+          let $song = $(` <div class="song" data-id='${songs[i].id}'>
+          <div class="name">
+          <span class="iconfont icon-play"></span>
+          ${songs[i].name}
+          <span class="iconfont icon-editmedia"></span>
+          </div>
+          <div class="singer">${singer}</div>
+          <div class="album">《${songs[i].album.name}》</div>
+          <div class="time">${dayjs(songs[i].duration).format('mm:ss')}</div>
+          </div>
+          `)
+          if(songs[i].mvid){
+            $song.find('.icon-editmedia').show()
+          }else{
+            $song.find('.icon-editmedia').hide()
+          }
+          // $song.appendTo($('.result-wrapper'))
+          $song.dblclick(function(){
+            location.href = './player.html?id=' + $(this).attr('data-id')
+          })
+          .appendTo($('.result-wrapper'))
+          .find('.icon-play').click(function(){
+            $(this).parents('.song').dblclick()
+          })
+          .next()
+          .click(function(){
+            location.href =  './video.html?mvid=' + songs[i].mvid
+          })
+        }
+      }
+    })
   </script>
 </body>
 
