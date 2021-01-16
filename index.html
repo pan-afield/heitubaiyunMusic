@@ -31,7 +31,21 @@
 
 
   <script>
-
+    $('#btn_search').click(function () {
+      let song = $('#text_song').val().trim()
+      if (song == '') {
+        alert('输入点啥')
+        return
+      } else {
+        $('iframe').attr('src','./results.html?song=' + song)
+        // location.href = './results.html?song=' + song
+      }
+    })
+    $('#text_song').keyup(function(e){
+      if(e.keyCode == 13){
+        $('#btn_search').click()
+      }
+    })
   </script>
 </body>
 
