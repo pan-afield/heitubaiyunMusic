@@ -35,9 +35,41 @@
       data : {id : id},
       success: function(res){
         console.log(res);
-        $('.audio').attr('src',res.data[0].url)
+        $('.audio').attr('src',res.data[0].url)[0].play()
       }
     })
+    $.get({
+      url: 'https://autumnfish.cn/song/detail',
+      data:{ids: id},
+      success: function(res){
+        console.log(res);
+        let date = res.songs[0]
+        let singer = ''
+        for(let i = 0 ;i<date.ar.length;i++){
+          singer += date.ar[i].name + '|'
+        }
+        singer = singer.substr(0,singer.length - 1)
+        $('.cover').attr('src',date.al.picUrl)
+        $('.title span').text(date.name)
+        $('.singer span').text(singer)
+        $('.album span').text(date.al.name)
+      }
+    })
+    $('.audio').on('play',function(){
+      $('.disc,.cover').addClass('running')
+    })
+    $('.audio').on('pouse',function(){
+      $('.disc,.cover').removeClass('running')
+    })
+    // $('.audio').paly(function(){
+    //   $('.disc,.cover').addClass('running')
+    // })
+    // $('.audio').pouse(function(){
+    //   $('.disc,.cover').removeClass('running')
+    // })
+    // 上面为错误实例;
+    // 并没有paly和pouse这两种方法，必须用on添加，因为：
+    // jQ用on方法可以给任何html元素添加任何事件
 </script>
 </body>
 

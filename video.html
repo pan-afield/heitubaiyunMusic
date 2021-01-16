@@ -17,7 +17,17 @@
 
   <script src="./lib/jquery-1.12.4.min.js"></script>
   <script>
-    
+    let id = location.search.split('=')[1]
+    console.log();
+    $.get({
+      url: ' https://autumnfish.cn/mv/url',
+      data: {id:id},
+      success: function(res){
+        console.log(res);
+        $('video').attr('src',res.data.url)[0].play()
+        console.log($('video').attr('src',res.data.url));
+      }
+    })
   </script>
 </body>
 </html>
